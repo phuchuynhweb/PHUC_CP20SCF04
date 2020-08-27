@@ -3,7 +3,7 @@
     // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
     include_once(__DIR__.'/dbconnect.php');
 // tạo câu truy vấn
-$tenhinhthucthanhtoan = 'Chuyển khoản ATM';
+$tenhinhthucthanhtoan = 'Chuyển khoản qua ATM';
 $sql = "INSERT INTO `hinhthucthanhtoan`(httt_ten) VALUES('$tenhinhthucthanhtoan');";
 // Thực thi câu lệnh query
 mysqli_query($conn,$sql);
