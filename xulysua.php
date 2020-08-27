@@ -9,13 +9,15 @@
 <body>
 <?php 
 $idmuonsua = $_GET['idmuonsua'];
+// var_dump($idmuonsua);
+// die;
 //Xuất dữ liệu cũ vào ô input
 // Truy vấn database để lấy danh sách
     // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
     include_once(__DIR__.'/dbconnect.php');
 $sql = <<<EOT
 SELECT httt_ma AS MaThanhToan, httt_ten AS TenThanhToan FROM `hinhthucthanhtoan`
-where MaThanhToan = $idmuonsua
+where MaThanhToan = $idmuonsua;
 EOT;
 // 3. Yêu cầu PHP thực thi QUERY
 $result = mysqli_query($conn, $sql);

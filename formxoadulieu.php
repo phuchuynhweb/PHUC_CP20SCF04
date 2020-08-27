@@ -38,7 +38,7 @@ EOT;
                 <td><?= $httt['ten']; ?></td>
                 <td>
                     <a href="xulyxoa.php?id=<?= $httt['ma']; ?>">Xóa</a>
-                    <a href="xulyxoa.php?idmuonsua=<?= $httt['ma']; ?>">Sửa</a>
+                    <a href="xulysua.php?idmuonsua=<?= $httt['ma']; ?>">Sửa</a>
                 </td>
             </tr>
             <?php endforeach; ?>
