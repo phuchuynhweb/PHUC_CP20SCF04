@@ -73,7 +73,7 @@ EOT;
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-             fvvcvbbxdf   
+           
     </div>
     </div>
     </div>
