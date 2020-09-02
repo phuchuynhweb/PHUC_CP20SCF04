@@ -67,7 +67,7 @@ EOT;
                                 <td><?= $httt['ten']; ?></td>
                                 <td>
                                     <a href="delete.php?id=<?= $httt['ma']; ?>">Xóa</a>
-                                    <a href="create.php?idmuonsua=<?= $httt['ma']; ?>">Sửa</a>
+                                    <a href="update.php?idmuonsua=<?= $httt['ma']; ?>">Sửa</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
