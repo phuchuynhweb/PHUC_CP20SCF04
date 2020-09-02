@@ -14,7 +14,6 @@
     <?php include_once(__DIR__.'/../../layouts/partials/header.php'); ?>
 
     
-
     <!-- Content -->
     <div class="container">
     <div class="row">
@@ -26,59 +25,34 @@
     </div>
     <div class="col-md-8">
     <?php 
-$idmuonsua = $_GET['idmuonsua'];
-// var_dump($idmuonsua);
-// die;
-//Xuất dữ liệu cũ vào ô input
-// Truy vấn database để lấy danh sách
+if(isset($_POST['btnThemmoi'])){
+    $httt_ten = $_POST['txt_httt_ten_Themmoi'];
+    // Truy vấn database để lấy danh sách
     // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
-    include_once(__DIR__.'/dbconnect.php');
-$sql = <<<EOT
-SELECT httt_ma AS MaThanhToan, httt_ten AS TenThanhToan FROM `hinhthucthanhtoan`
-where MaThanhToan = $idmuonsua;
-EOT;
-// 3. Yêu cầu PHP thực thi QUERY
-$result = mysqli_query($conn, $sql);
-// 4. Khi thực thi các truy vấn dạng SELECT, dữ liệu lấy về cần phải phân tích để sử dụng
-// Thông thường, chúng ta sẽ sử dụng vòng lặp while để duyệt danh sách các dòng dữ liệu được SELECT
-// Ta sẽ tạo 1 mảng array để chứa các dữ liệu được trả về
-$datacu = [];
-while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    $datacu = array(
-        'ma' => $row['MaThanhToan'],
-        'ten' => $row['TenThanhToan'],
-    );
-}
-// update dữ liệu người dùng thay đổi
-
-if(isset($_POST['btnSua'])){
-    $httt_tenupdate = $_POST['txt_httt_ten_update'];
+    include_once(__DIR__.'/../../../dbconnect.php');
 // tạo câu truy vấn
-$sql = <<<EOT
-    UPDATE hinhthucthanhtoan
-        SET
-              httt_ten=N'$httt_tenupdate'
-        WHERE httt_ma = $idmuonsua;
-EOT;
+$sql = "INSERT INTO `hinhthucthanhtoan`(httt_ten) VALUES('$httt_ten');";
 // Thực thi câu lệnh query
 mysqli_query($conn,$sql);
 }
 
 ?>
     <h1>Thêm mới hình thức thanh toán</h1>
-    <form name="frmSua" id="frmSua" method="post" action="">
+    <form name="frmThemmoi" id="frmThemmoi" method="post" action="">
         <table>
             <tr>
             <td>Hình thức thanh toán</td>
             </tr>
             <tr>
             <td>
-                <input type="text" name="txt_httt_ten_update" id="txt_httt_ten_update" value="<?php echo $datacu['TenThanhToan'];  ?>"/>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="txt_httt_ten_Themmoi" id="txt_httt_ten_Themmoi" aria-describedby="emailHelp">
+                </div>
             </td>
             </tr>
             <tr>
             <td>
-                <input type="submit" name="btnSua" id="btnSua" value="Thay đổi sữ liệu"/>
+                <input type="submit" name="btnThemmoi" id="btnThemmoi" value="Lưu dữ liệu"/>
             </td>
             </tr>
         </table>
@@ -94,5 +68,45 @@ mysqli_query($conn,$sql);
 <!-- Liên kết jquery và js boostrap -->
     <?php include_once(__DIR__.'/../../layouts/scripts.php'); ?>
 
+<script>
+//
+$(document).ready(function(){
+    $("#frmThemmoi").validate({
+        rules:{
+            txt_httt_ten_Themmoi:{
+                required: true,
+                minlength: 3,
+                maxlength:50
+            }
+            
+        },
+        messages: {
+            txt_httt_ten_Themmoi:{
+                required:"Vui lòng nhập hình thức thanh toán",
+                minlength: "Vui lòng nhập hình thức thanh toán lớn hơn 3 ký tự",
+                maxlength:"Vui lòng nhập tên hình thức thanh toán nhỏ hơn 30 ký tự",
+            }
+        },
+        errorElement: "em",
+        errorPlacement: function(error, element) {
+          // Thêm class `invalid-feedback` cho field đang có lỗi
+          error.addClass("invalid-feedback");
+          if (element.prop("type") === "checkbox") {
+            error.insertAfter(element.parent("label"));
+          } else {
+            error.insertAfter(element);
+          }
+        },
+        success: function(label, element) {},
+        highlight: function(element, errorClass, validClass) {
+          $(element).addClass("is-invalid").removeClass("is-valid");
+        },
+        unhighlight: function(element, errorClass, validClass) {
+          $(element).addClass("is-valid").removeClass("is-invalid");
+        },
+    });
+
+})
+</script>
 </body>
 </html>
