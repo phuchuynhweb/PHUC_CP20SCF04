@@ -66,7 +66,7 @@ EOT;
                                 <td><?= $httt['ma']; ?></td>
                                 <td><?= $httt['ten']; ?></td>
                                 <td>
-                                    <a href="delete.php?id=<?= $httt['ma']; ?>">Xóa</a>
+                                    <a href="delete.php?idmuonxoa=<?= $httt['ma']; ?>">Xóa</a>
                                     <a href="update.php?idmuonsua=<?= $httt['ma']; ?>">Sửa</a>
                                 </td>
                             </tr>

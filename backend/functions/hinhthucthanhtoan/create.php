@@ -39,15 +39,34 @@
                     'rule' => 'maxlength',
                     'rule_value' => 30,
                     'value' => $httt_ten,
-                    'msg' => 'Tên hình thức thanh toán phải nhỏ hơn 3 ký tự',
+                    'msg' => 'Tên hình thức thanh toán phải nhỏ hơn 30 ký tự',
                 ];
             }
         };
         // echo '<pre>';
         // echo print_r($errors);die;
         // echo '</pre>';
+        // var_dump($httt_ten);die;
     ?>
 
+    <!-- Thực hiện insert dữ liệu vào CSDL -->
+
+    <?php 
+    if(isset($_POST['txt_httt_ten_Themmoi'])){
+        $httt_ten = $_POST['txt_httt_ten_Themmoi'];
+    
+        if(isset($_POST['btnThemmoi']) && (!isset($errors)) || (empty($errors))){
+                
+            // Truy vấn database để lấy danh sách
+            // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
+                include_once(__DIR__.'/../../../dbconnect.php');
+            // tạo câu truy vấn
+                $sql = "INSERT INTO `hinhthucthanhtoan`(httt_ten) VALUES('$httt_ten')";
+            // Thực thi câu lệnh query
+                mysqli_query($conn,$sql);
+        }
+    }
+    ?>
     <!-- Phần Header -->
     <?php include_once(__DIR__.'/../../layouts/partials/header.php'); ?>
 
@@ -62,18 +81,6 @@
     
     </div>
     <div class="col-md-8">
-    <?php 
-if(isset($_POST['btnThemmoi'])){
-    // Truy vấn database để lấy danh sách
-    // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
-    include_once(__DIR__.'/../../../dbconnect.php');
-    // tạo câu truy vấn
-        $sql = "INSERT INTO `hinhthucthanhtoan`(httt_ten) VALUES('$httt_ten');";
-    // Thực thi câu lệnh query
-        mysqli_query($conn,$sql);
-}
-
-?>
     <h1>Thêm mới hình thức thanh toán</h1>
     <form name="frmThemmoi" id="frmThemmoi" method="post" action="">
         <table>
@@ -86,6 +93,32 @@ if(isset($_POST['btnThemmoi'])){
                     <input type="text" class="form-control" name="txt_httt_ten_Themmoi" id="txt_httt_ten_Themmoi" aria-describedby="emailHelp">
                 </div>
             </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- Nếu có lỗi VALIDATE dữ liệu thì hiển thị ra màn hình 
+                    - Sử dụng thành phần (component) Alert của Bootstrap
+                    - Mỗi một lỗi hiển thị sẽ in theo cấu trúc Danh sách không thứ tự UL > LI
+                    -->
+                    <?php if (
+                    isset($_POST['btnThemmoi'])  // Nếu người dùng có bấm nút "Lưu dữ liệu"
+                    && isset($errors)         // Nếu biến $errors có tồn tại
+                    && (!empty($errors))      // Nếu giá trị của biến $errors không rỗng
+                    ) : ?>
+                    <div id="errors-container" class="alert alert-danger face my-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <ul>
+                        <?php foreach ($errors as $fields) : ?>
+                            <?php foreach ($fields as $field) : ?>
+                            <li><?php echo $field['msg']; ?></li>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+                </td>
             </tr>
             <tr>
             <td>
@@ -106,7 +139,6 @@ if(isset($_POST['btnThemmoi'])){
     <?php include_once(__DIR__.'/../../layouts/scripts.php'); ?>
 
 <script>
-//
 $(document).ready(function(){
     $("#frmThemmoi").validate({
         rules:{
