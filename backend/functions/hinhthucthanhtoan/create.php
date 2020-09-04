@@ -10,6 +10,44 @@
 
 </head>
 <body>
+    <!-- Kiểm tra form phía server -->
+    <?php  
+        $errors =[];
+        if(isset($_POST['btnThemmoi'])){
+            $httt_ten = $_POST['txt_httt_ten_Themmoi'];
+            // Trường hợp httt_ten rổng 
+            if(empty($httt_ten)){
+                $errors['httt_ten'][] = [
+                        'rule' => 'required',
+                        'rule_value' => true,
+                        'value' => $httt_ten,
+                        'msg' => 'Vui lòng nhập tên hình thức thanh toán',
+                ];
+            }
+                // Minlength < 3
+            if(!empty($httt_ten)&& strlen($httt_ten) < 3){
+                    $errors['httt_ten'][] = [
+                        'rule' => 'minlength',
+                        'rule_value' => 3,
+                        'value' => $httt_ten,
+                        'msg' => 'Tên hình thức thanh toán phải từ 3 ký tự trở lên',
+                    ];
+            }
+            // Maxlength > 30
+            if(!empty($httt_ten)&& strlen($httt_ten) > 30){
+                $errors['httt_ten'][] = [
+                    'rule' => 'maxlength',
+                    'rule_value' => 30,
+                    'value' => $httt_ten,
+                    'msg' => 'Tên hình thức thanh toán phải nhỏ hơn 3 ký tự',
+                ];
+            }
+        };
+        // echo '<pre>';
+        // echo print_r($errors);die;
+        // echo '</pre>';
+    ?>
+
     <!-- Phần Header -->
     <?php include_once(__DIR__.'/../../layouts/partials/header.php'); ?>
 
@@ -26,7 +64,6 @@
     <div class="col-md-8">
     <?php 
 if(isset($_POST['btnThemmoi'])){
-    $httt_ten = $_POST['txt_httt_ten_Themmoi'];
     // Truy vấn database để lấy danh sách
     // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
     include_once(__DIR__.'/../../../dbconnect.php');
