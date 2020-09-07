@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hình thức thanh toán</title>
+    <title>Sản phẩm</title>
     <!-- Liên kết CSS boostrap -->
     <?php include_once(__DIR__.'/../../layouts/styles.php'); ?>
 
@@ -25,7 +25,7 @@
     
     </div>
     <div class="col-md-8">
-    <h1>Danh sách hình thức thanh toán</h1>
+    <h1>Danh sách sản phẩm</h1>
     <a href="create.php" class="btn btn-primary">Thêm mới</a>
     <?php
                     // Truy vấn database để lấy danh sách
@@ -51,7 +51,9 @@ EOT;
                     // Thông thường, chúng ta sẽ sử dụng vòng lặp while để duyệt danh sách các dòng dữ liệu được SELECT
                     // Ta sẽ tạo 1 mảng array để chứa các dữ liệu được trả về
                     $data = [];
+                    $rowNum = 0;
                     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                        $rowNum ++;
                         $km_tomtat ='';
                         $km_ten = $row['km_ten'];
                         $km_noidung = $row['km_noidung'];
@@ -74,7 +76,8 @@ EOT;
                             'sp_giacu' => number_format($row['sp_giacu'], 2, ".", ",") . ' vnđ',
                             'lsp_ten' => $row['lsp_ten'],
                             'nsx_ten' => $row['nsx_ten'],
-                            'km_tomtat' => $km_tomtat
+                            'km_tomtat' => $km_tomtat,
+                            'rownumber' => $rowNum
                         );
                     }
                     // var_dump($data);die;
@@ -83,7 +86,7 @@ EOT;
                     <table border="1" width="100%">
                         <thead>
                             <tr>
-                                <th>Mã sản phẩm</th>
+                                <th>STT</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Giá sản phẩm</th>
                                 <th>Giá cũ</th>
@@ -96,7 +99,7 @@ EOT;
                         <tbody>
                             <?php foreach($data as $sp): ?>
                             <tr>
-                                <td><?= $sp['sp_ma']; ?></td>
+                                <td><?= $sp['rownumber']; ?></td>
                                 <td><?= $sp['sp_ten']; ?></td>
                                 <td><?= $sp['sp_gia']; ?></td>
                                 <td><?= $sp['sp_giacu']; ?></td>
