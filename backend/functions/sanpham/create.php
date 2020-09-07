@@ -189,9 +189,64 @@
                         <label for="sp_soluong">Số lượng</label>
                         <input type="text" class="form-control" id="sp_soluong" name="sp_soluong" placeholder="Số lượng Sản phẩm" value="">
                     </div>
-                    <button class="btn btn-primary">Lưu dữ liệu</button>
+                    <div class="form-group">
+                        <label for="lsp_ma">Loại sản phẩm</label>
+                            <select class="form-control" name="lsp_ma" id="lsp_ma">
+                                <?php foreach ($dataLoaiSanPham as $loaisanpham):  ?>
+                                    <option value="<?php echo $loaisanpham['lsp_ma']; ?>"><?php echo $loaisanpham['lsp_ten'];   ?></option>
+                                <?php endforeach;  ?>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nsx_ma">Nhà sản xuất</label>
+                        <select class="form-control" name="nsx_ma" id="nsx_ma">
+                            <?php foreach ($dataNhaSanXuat as $nhasanxuat):  ?>
+                                <option value="<?php echo $nhasanxuat['nsx_ma']; ?>"><?php echo $nhasanxuat['nsx_ten'];   ?></option>
+                            <?php endforeach;  ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="km_ma">Khuyến mãi</label>
+                        <select class="form-control" name="km_ma" id="km_ma">
+                            <?php foreach ($dataKhuyenMai as $khuyenmai):  ?>
+                                <option value="">Không áp dụng</option>
+                                <option value="<?php echo $khuyenmai['km_ma']; ?>"><?php echo $khuyenmai['km_tomtat'];   ?></option>
+                            <?php endforeach;  ?>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" name="btnThemsanpham" id="btnThemsanpham">Lưu dữ liệu</button>
         </div>
     </form>
+    <!-- ------Thực thi câu truy vấn----- -->
+    <?php  
+        if(isset($_POST['btnThemsanpham'])){
+            $sp_ten = $_POST['sp_ten'];
+            $sp_gia = $_POST['sp_gia'];
+            $sp_giacu = $_POST['sp_giacu'];
+            $sp_mota_ngan = $_POST['sp_mota_ngan'];
+            $sp_mota_chitiet = $_POST['sp_mota_chitiet'];
+            $sp_ngaycapnhat = $_POST['sp_ngaycapnhat'];
+            $sp_soluong = $_POST['sp_soluong'];
+            $lsp_ma = $_POST['lsp_ma'];
+            $nsx_ma =$_POST['nsx_ma'];
+            $km_ma = (empty($_POST['km_ma']))? 'NULL' : $_POST['km_ma'] ;
+
+            //Chuẩn bị câu truy vấn
+            $sql = <<<EOT
+                INSERT INTO sanpham
+                    (sp_ten, sp_gia, sp_giacu, sp_mota_ngan, sp_mota_chitiet, sp_ngaycapnhat, sp_soluong, lsp_ma, nsx_ma, km_ma)
+                    VALUES ('$sp_ten', $sp_gia, $sp_giacu, N'$sp_mota_ngan', N'$sp_mota_chitiet', $sp_ngaycapnhat, $sp_soluong, $lsp_ma, $nsx_ma, $km_ma)
+EOT;
+            // Thực thi câu truy vấn
+            mysqli_query($conn, $sql);
+            // Đóng kết nối CSDL
+            mysqli_close($conn);
+            // Quay về trang index
+            echo "<script>location.href = 'index.php';</script>";
+
+        }
+    ?>
     </div>
     </div>
     </div>
