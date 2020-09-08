@@ -108,7 +108,7 @@ EOT;
                                 <td><?= $sp['nsx_ten']; ?></td>
                                 <td><?= $sp['km_tomtat']; ?></td>
                                 <td>
-                                    <a href="delete.php?sp_ma=<?= $sp['sp_ma']; ?>" class="btn btn-danger">Xóa</a>
+                                    <button class="btn btn-danger btnDelete" data-sp_ma="<?= $sp['sp_ma']; ?>">Xóa</button>
                                     <a href="update.php?sp_ma==<?= $sp['sp_ma']; ?>"class="btn btn-primary">Sửa</a>
                                 </td>
                             </tr>
@@ -142,8 +142,28 @@ EOT;
             ]
         }
         );
-        // Xử lý sweetalert
-        swal('hello sweetalert');
+        // Bắt sự kiện (event) cho class .btnDelete
+        $(".btnDelete").click(function(){
+            swal({
+                    title: "Bạn có chắc muốn xóa?",
+                    text: "Dữ liệu của bạn sẽ không thể phục hồi",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+            .then((willDelete) => {
+                if (willDelete) {
+                        var sp_ma = $(this).data('sp_ma');
+                        var url = "delete.php?sp_ma="+sp_ma;
+                        location.href = url;
+                        swal("Bạn đã xóa thành công!", {
+                        icon: "success",
+                        });
+                } else {
+                        swal("Dữ liệu của bạn chưa được xóa!");
+                    }
+                });
+        })
     })
     </Script>
 </body>
