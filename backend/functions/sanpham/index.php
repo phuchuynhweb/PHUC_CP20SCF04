@@ -7,7 +7,8 @@
     <title>Sản phẩm</title>
     <!-- Liên kết CSS boostrap -->
     <?php include_once(__DIR__.'/../../layouts/styles.php'); ?>
-
+    <link rel="stylesheet" type="text/css" href="/PHUC_CP20SCF04/assets/vendor/datatables/datatables.css" />
+    <link rel="stylesheet" type="text/css" href="/PHUC_CP20SCF04/assets/vendor/datatables/buttons/css/buttons.bootstrap4.min.css" />
 </head>
 <body>
     <!-- Phần Header -->
@@ -83,7 +84,7 @@ EOT;
                     // var_dump($data);die;
                     // print_r($data);die;
                     ?>
-                    <table border="1" width="100%">
+                    <table id="dsSanpham" border="1" width="100%">
                         <thead>
                             <tr>
                                 <th>STT</th>
@@ -125,6 +126,25 @@ EOT;
 
 <!-- Liên kết jquery và js boostrap -->
     <?php include_once(__DIR__.'/../../layouts/scripts.php'); ?>
+    <script src="/PHUC_CP20SCF04/assets/vendor/datatables/datatables.js"></script>
+    <script src="/PHUC_CP20SCF04/assets/vendor/datatables/buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/PHUC_CP20SCF04/assets/vendor/datatables/pdfmake/pdfmake.min.js"></script>
+    <script src="/PHUC_CP20SCF04/assets/vendor/datatables/pdfmake/vfs_fonts.js"></script>
+    <script src="/PHUC_CP20SCF04/assets/vendor/sweetalert/sweetalert.min.js"></script>
 
+    <script>
+    $(document).ready(function(){
+        // Xử lý table
+        $('#dsSanpham').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'excel', 'pdf'
+            ]
+        }
+        );
+        // Xử lý sweetalert
+        swal('hello sweetalert');
+    })
+    </Script>
 </body>
 </html>
