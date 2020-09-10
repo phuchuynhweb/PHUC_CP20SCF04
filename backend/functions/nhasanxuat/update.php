@@ -52,30 +52,46 @@
     <!-- Thực hiện insert dữ liệu vào CSDL -->
 
     <?php 
-    if(isset($_GET['nsx_ma'])){
+    if(isset($_GET['nsx_ma']) && isset($_POST['txt_httt_ten_update_nsx'])){
             $nsx_ma = $_GET['nsx_ma'];
-    }
-
-    if(isset($_POST['txt_httt_ten_update_nsx'])){
-        $nsx_ten = $_POST['txt_httt_ten_update_nsx'];
-
-        if(isset($_POST['btnUpdatensx']) && (!isset($errors)) || (empty($errors))){
-            
-                
-            // Truy vấn database để lấy danh sách
-            // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
-                include_once(__DIR__.'/../../../dbconnect.php');
-            // tạo câu truy vấn
-            $sql = <<<EOT
-            UPDATE `nhasanxuat`
-            SET
-            nsx_ten=N'$nsx_ten'
-            WHERE nsx_ma = $nsx_ma
-EOT;
-            // Thực thi câu lệnh query
-                mysqli_query($conn,$sql);
+            $nsx_ten = $_POST['txt_httt_ten_update_nsx'];
+            if(isset($_POST['btnUpdatensx']) && (!isset($errors)) || (empty($errors))){
+                // Truy vấn database để lấy danh sách
+                // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
+                    include_once(__DIR__.'/../../../dbconnect.php');
+                // tạo câu truy vấn
+                $sql = <<<EOT
+                UPDATE `nhasanxuat`
+                SET
+                nsx_ten=N'$nsx_ten'
+                WHERE nsx_ma = $nsx_ma
+    EOT;
+                // Thực thi câu lệnh query
+                    mysqli_query($conn,$sql);
         }
     }
+
+    
+//     if(isset($_POST['txt_httt_ten_update_nsx'])){
+//         $nsx_ten = $_POST['txt_httt_ten_update_nsx'];
+//     };
+//     if(isset($_GET['nsx_ma'])){
+//         $nsx_ma = $_GET['nsx_ma'];
+//     };
+//     if(isset($_POST['btnUpdatensx']) && (!isset($errors)) || (empty($errors))){
+//             // Truy vấn database để lấy danh sách
+//             // 1. Include file cấu hình kết nối đến database, khởi tạo kết nối $conn
+//                 include_once(__DIR__.'/../../../dbconnect.php');
+//             // tạo câu truy vấn
+//             $sql = <<<EOT
+//             UPDATE `nhasanxuat`
+//             SET
+//             nsx_ten=N'$nsx_ten'
+//             WHERE nsx_ma = $nsx_ma
+// EOT;
+//             // Thực thi câu lệnh query
+//                 mysqli_query($conn,$sql);
+//     }
     ?>
     <!-- Phần Header -->
     <?php include_once(__DIR__.'/../../layouts/partials/header.php'); ?>
