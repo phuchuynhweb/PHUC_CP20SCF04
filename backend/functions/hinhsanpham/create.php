@@ -116,7 +116,7 @@
                 <label for="hsp_tentaptin">Tập tin ảnh</label>
                 <!-- Tạo khung div hiển thị ảnh cho người dùng Xem trước khi upload file lên Server -->
                 <div class="preview-img-container">
-                <img src="/php/myhand/assets/shared/img/default-image_600.png" id="preview-img" width="200px" />
+                <img src="/PHUC_CP20SCF04/assets/shared/img/img-defaut.png" id="preview-img" width="200px" />
                 </div>
                 <!-- Input cho phép người dùng chọn FILE -->
                 <input type="file" class="form-control" id="hsp_tentaptin" name="hsp_tentaptin">
