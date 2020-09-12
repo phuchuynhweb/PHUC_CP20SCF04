@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Thêm mới hình sản phẩm</title>
+    <title>Update hình sản phẩm</title>
     <!-- Liên kết CSS boostrap -->
     <?php include_once(__DIR__.'/../../layouts/styles.php'); ?>
 
@@ -33,13 +33,22 @@
               'sp_ten' => $ten_tomtat
       );
     }
+    // Truy vấn lấy tên tập tin sản phẩm cũ
+    $hsp_ma = $_GET['hsp_ma'];
+    //Chuẩn bị câu truy vấn để lấy dữ liệu cũ
+    $sqlHinhsanpham = "Select * from `hinhsanpham` where hsp_ma = $hsp_ma ";
+    //Thực thi câu truy vấn
+    $resultSelect = mysqli_query($conn,$sqlHinhsanpham);
+    //Bóc tách dữ liệu
+    $hinhsanphamRow = mysqli_fetch_array($resultSelect, MYSQLI_ASSOC);
     ?>
+   
     <?php 
     /* Tiến hành sao lưu file do client upload từ thư mục tạm của apache vào thư mục upload*/
     // Nếu người dùng bấm nút lưu thì thực thi câu lệnh update
     if(isset($_POST['btnSave'])){
       // lấy dữ liệu mã sản phẩm cần update mà người dùng POST
-      $sp_ma = $_POST['sp_ma'];
+      $hsp_ma = $_GET['hsp_ma'];
       // Nếu người dùng có load file
       if(isset($_FILES['hsp_tentaptin'])){
         // Tạo biến chứa đường dẫn thư mục upload
@@ -47,16 +56,25 @@
         $sub_dir = "products/";
         // Kiểm tra file gởi lên xem có lỗi không
         if($_FILES['hsp_tentaptin']['error'] > 0){
-          echo "File Upload bị lỗi"; die;
+        echo "File Upload bị lỗi"; die;
         } else{
-          // Nếu không lỗi thì di chuyển từ thư mục tạm vào thư mục mong muốn
-          $hsp_tentaptin = $_FILES['hsp_tentaptin']['name'];
-          // Để tránh việc client load file trùng tên, gắn thêm date để phân biệt
-          $tentaptin = date('YmdHis').'_'.$hsp_tentaptin;
-          move_uploaded_file($_FILES['hsp_tentaptin']['tmp_name'], $upload_dir . $sub_dir . $tentaptin);
+        // Tháo file dữ liệu cũ nếu tồn tại
+        $old_file = $upload_dir.$sub_dir.$hinhsanphamRow['hsp_tentaptin'];
+        if(file_exists($old_file)){
+            unlink($old_file);
+        }
+        // Nếu không lỗi thì di chuyển từ thư mục tạm vào thư mục mong muốn
+        $hsp_tentaptin = $_FILES['hsp_tentaptin']['name'];
+        // Để tránh việc client load file trùng tên, gắn thêm date để phân biệt
+        $tentaptinmoi = date('YmdHis').'_'.$hsp_tentaptin;
+        move_uploaded_file($_FILES['hsp_tentaptin']['tmp_name'], $upload_dir . $sub_dir . $tentaptinmoi);
         }
         // Lưu thông tin upload vào database
-        $sql = "INSERT INTO `hinhsanpham` (hsp_tentaptin, sp_ma) VALUES ('$tentaptin', $sp_ma);";
+        $sql = <<<EOT
+        UPDATE `hinhsanpham`
+        SET hsp_tentaptin = '$tentaptinmoi'
+        where hsp_ma = $hsp_ma
+EOT;
         // print_r($sql); die;
         // Thực thi INSERT
         mysqli_query($conn, $sql);
@@ -70,10 +88,7 @@
 
     }
     ?>
-
-    
-
-    
+   
     <!-- Phần Header -->
     <?php include_once(__DIR__.'/../../layouts/partials/header.php'); ?>
 
@@ -92,9 +107,13 @@
             <div class="form-group">
                 <label for="sp_ma">Sản phẩm</label>
                 <select class="form-control" id="sp_ma" name="sp_ma">
-                  <?php foreach($dataSanpham as $tensanpham): ?>
-                      <option value="<?= $tensanpham['sp_ma'] ?>"><?= $tensanpham['sp_ten'] ?></option>
-                  <?php endforeach; ?>
+                <?php foreach ($dataSanPham as $sanpham) : ?>
+                <?php if ($sanpham['sp_ma'] == $hinhsanphamRow['sp_ma']) : ?>
+                  <option value="<?= $sanpham['sp_ma'] ?>" selected><?= $sanpham['sp_tomtat'] ?></option>
+                <?php else : ?>
+                  <option value="<?= $sanpham['sp_ma'] ?>"><?= $sanpham['sp_tomtat'] ?></option>
+                <?php endif; ?>
+              <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
