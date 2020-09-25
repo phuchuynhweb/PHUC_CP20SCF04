@@ -109,7 +109,7 @@ EOT;
                                 <td><?= $sp['km_tomtat']; ?></td>
                                 <td>
                                     <button class="btn btn-danger btnDelete" data-sp_ma="<?= $sp['sp_ma']; ?>">Xóa</button>
-                                    <a href="update.php?sp_ma==<?= $sp['sp_ma']; ?>"class="btn btn-primary">Sửa</a>
+                                    <a href="update.php?sp_ma=<?= $sp['sp_ma']; ?>"class="btn btn-primary">Sửa</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
